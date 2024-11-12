@@ -1,0 +1,97 @@
+---
+title: "Lab 1.1"
+author: "HOUNWANOU Christophe"
+date: "2024-11-11"
+output: pdf_document
+---
+
+** Import librairies**
+```{r}
+library(readr) # read csv
+library(dplyr) # data manipulation
+library(caret) 
+library(class) # model
+library(ggplot2) # plots
+library(corrplot) # Correlation plots
+```
+
+# a) Load the dataset
+```{r}
+data <- read.csv("data_simulated.csv")
+head(data)
+```
+# b) Calculate correlation coefficients manually
+
+```{r}
+cor_manually <- function(x,y){
+  n<- length(x)
+  x_mean <- mean(x)
+  y_mean <- mean(y)
+  fact_num <- sum((x - x_mean) * (y - y_mean))
+  fact_denom <- sqrt(sum((x - x_mean)^2) * sum((y - y_mean)^2))
+  corxy<- fact_num / fact_denom
+  return(corxy)
+  
+}
+
+```
+
+```{r}
+x= data$x
+y1= data$y1
+y2= data$y2
+y3= data$y3
+y4= data$y4
+
+```
+
+
+```{r}
+# Now calculate correlations between each pair of variables
+cor_xy1 <- cor_manually(x, y1)
+cor_xy2 <- cor_manually(x, y2)
+cor_xy3 <- cor_manually(x, y3)
+cor_xy4 <- cor_manually(x, y4)
+cor_y1y2 <- cor_manually(y1, y2)
+cor_y1y3 <- cor_manually(y1, y3)
+cor_y1y4 <- cor_manually(y1, y4)
+cor_y2y3 <- cor_manually(y2, y3)
+cor_y2y4 <- cor_manually(y2, y4)
+cor_y3y4 <- cor_manually(y3, y4)
+```
+
+```{r}
+# Display results
+result <- data.frame(
+  Pair = c("x & y1", "x & y2", "x & y3", "x & y4",  "y1 & y2", 
+           "y1 & y3", "y1 & y4", "y2 & y3", "y2 & y4", "y3 & y4"),
+  Correlation = c(cor_xy1, cor_xy2, cor_xy3, cor_xy4, cor_y1y2, cor_y1y3, cor_y1y4, cor_y2y3, cor_y2y4, cor_y3y4)
+)
+kable(result, caption = "Corr coefficients")
+```
+```{r}
+plot(x,y1)
+print("Because cor_xy1 is between 0.8 and 1, then there exists a strong positive correlation between x and y1")
+
+```
+
+```{r}
+plot(x,y2)
+print("x and y2 are negatively strongly dependent")
+
+
+```
+```{r}
+plot(x,y3)
+print("Weak negative correlation")
+```
+```{r}
+plot(x,y4)
+plot(y1,y2)
+plot(y1,y3)
+plot(y1,y4)
+plot(y2,y3)
+plot(y2,y4)
+plot(y3,y4)
+```
+
